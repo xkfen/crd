@@ -65,6 +65,8 @@
 
 ## FAQ
  1. why need boilerplate.go.txt ?
+ code-generator的client-gen, deepcopy-gen, lister-gen, informer-gen在启动的时候默认会读取$Projetc/hack目录下的boilerplate.go.txt文件，因此在上述的准备工作中把code-generator/hack/boilerplate.go.txt文件copy到了当前目录下，并在生成模块，通过--go-header-file指定了boilerplate.go.txt文件位置。
+ 同样也可以参考https://github.com/kubernetes/sample-controller中的hack/update-codegen.sh脚本里面也有类似的说明。
     ````
     F1223 11:22:28.005533    6641 deepcopy.go:131] Failed loading boilerplate: open k8s.io/code-generator/hack/boilerplate.go.txt: no such file or directory
     goroutine 1 [running]:
