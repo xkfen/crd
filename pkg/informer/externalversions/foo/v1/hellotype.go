@@ -19,7 +19,7 @@ package v1
 
 import (
 	foov1 "crd/pkg/apis/foo/v1"
-	internalinterfaces "crd/pkg/client/externalversions/internalinterfaces"
+	internalinterfaces "crd/pkg/informer/externalversions/internalinterfaces"
 	time "time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -30,59 +30,59 @@ import (
 	v1 "k8s.io/kubernetes/pkg/client/listers/foo/v1"
 )
 
-// StudentInformer provides access to a shared informer and lister for
-// Students.
-type StudentInformer interface {
+// HelloTypeInformer provides access to a shared informer and lister for
+// HelloTypes.
+type HelloTypeInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1.StudentLister
+	Lister() v1.HelloTypeLister
 }
 
-type studentInformer struct {
+type helloTypeInformer struct {
 	factory          internalinterfaces.SharedInformerFactory
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
 	namespace        string
 }
 
-// NewStudentInformer constructs a new informer for Student type.
+// NewHelloTypeInformer constructs a new informer for HelloType type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewStudentInformer(client clientset.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
-	return NewFilteredStudentInformer(client, namespace, resyncPeriod, indexers, nil)
+func NewHelloTypeInformer(client clientset.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
+	return NewFilteredHelloTypeInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
-// NewFilteredStudentInformer constructs a new informer for Student type.
+// NewFilteredHelloTypeInformer constructs a new informer for HelloType type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewFilteredStudentInformer(client clientset.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
+func NewFilteredHelloTypeInformer(client clientset.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
 	return cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options metav1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.BolingcavalryV1().Students(namespace).List(options)
+				return client.FooV1().HelloTypes(namespace).List(options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.BolingcavalryV1().Students(namespace).Watch(options)
+				return client.FooV1().HelloTypes(namespace).Watch(options)
 			},
 		},
-		&foov1.Student{},
+		&foov1.HelloType{},
 		resyncPeriod,
 		indexers,
 	)
 }
 
-func (f *studentInformer) defaultInformer(client clientset.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
-	return NewFilteredStudentInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
+func (f *helloTypeInformer) defaultInformer(client clientset.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
+	return NewFilteredHelloTypeInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
 }
 
-func (f *studentInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&foov1.Student{}, f.defaultInformer)
+func (f *helloTypeInformer) Informer() cache.SharedIndexInformer {
+	return f.factory.InformerFor(&foov1.HelloType{}, f.defaultInformer)
 }
 
-func (f *studentInformer) Lister() v1.StudentLister {
-	return v1.NewStudentLister(f.Informer().GetIndexer())
+func (f *helloTypeInformer) Lister() v1.HelloTypeLister {
+	return v1.NewHelloTypeLister(f.Informer().GetIndexer())
 }

@@ -18,8 +18,8 @@ limitations under the License.
 package foo
 
 import (
-	v1 "crd/pkg/client/externalversions/foo/v1"
-	internalinterfaces "crd/pkg/client/externalversions/internalinterfaces"
+	v1 "crd/pkg/informer/externalversions/foo/v1"
+	internalinterfaces "crd/pkg/informer/externalversions/internalinterfaces"
 )
 
 // Interface provides access to each of this group's versions.

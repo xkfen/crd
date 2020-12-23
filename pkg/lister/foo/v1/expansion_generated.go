@@ -17,10 +17,10 @@ limitations under the License.
 
 package v1
 
-// StudentListerExpansion allows custom methods to be added to
-// StudentLister.
-type StudentListerExpansion interface{}
+// HelloTypeListerExpansion allows custom methods to be added to
+// HelloTypeLister.
+type HelloTypeListerExpansion interface{}
 
-// StudentNamespaceListerExpansion allows custom methods to be added to
-// StudentNamespaceLister.
-type StudentNamespaceListerExpansion interface{}
+// HelloTypeNamespaceListerExpansion allows custom methods to be added to
+// HelloTypeNamespaceLister.
+type HelloTypeNamespaceListerExpansion interface{}

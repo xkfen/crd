@@ -18,13 +18,13 @@ limitations under the License.
 package v1
 
 import (
-	internalinterfaces "crd/pkg/client/externalversions/internalinterfaces"
+	internalinterfaces "crd/pkg/informer/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
-	// Students returns a StudentInformer.
-	Students() StudentInformer
+	// HelloTypes returns a HelloTypeInformer.
+	HelloTypes() HelloTypeInformer
 }
 
 type version struct {
@@ -38,7 +38,7 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
 }
 
-// Students returns a StudentInformer.
-func (v *version) Students() StudentInformer {
-	return &studentInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+// HelloTypes returns a HelloTypeInformer.
+func (v *version) HelloTypes() HelloTypeInformer {
+	return &helloTypeInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

@@ -18,8 +18,8 @@ limitations under the License.
 package externalversions
 
 import (
-	foo "crd/pkg/client/externalversions/foo"
-	internalinterfaces "crd/pkg/client/externalversions/internalinterfaces"
+	foo "crd/pkg/informer/externalversions/foo"
+	internalinterfaces "crd/pkg/informer/externalversions/internalinterfaces"
 	reflect "reflect"
 	sync "sync"
 	time "time"
@@ -171,9 +171,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Bolingcavalry() foo.Interface
+	Foo() foo.Interface
 }
 
-func (f *sharedInformerFactory) Bolingcavalry() foo.Interface {
+func (f *sharedInformerFactory) Foo() foo.Interface {
 	return foo.New(f, f.namespace, f.tweakListOptions)
 }
