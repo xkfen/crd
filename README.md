@@ -4,24 +4,29 @@
 - 在项目下创建pkg/apis/foo/v1目录
 - 在pkg/apis/foo下创建register.go
 - 在pkg/apis/foo/v1下创建doc.go, types.go, register.go
+- 项目使用的是gomodule, 把项目crd clone到【$GOPATH/src目录】下
 - copy https://github.com/kubernetes/code-generator.git到$GOPATH/src/k8s.io下(我用的是release-1.16分支。如果需要特定的分支则先切换分支再继续)
-    1. cd 到cmd/client-gen,生成client-go并copy到【与当前项目平级的位置】
-    2. cd 到cmd/deepcopy-gen，生成deepcopy-gen并copy到【与当前项目平级的位置】
-    3. cd 到cmd/lister-gen，生成lister-gen并copy到【与当前项目平级的位置】
-    4. cd 到cmd/informer-gen，生成informer-gen并copy【到与当前项目平级的位置】
-    5. cd 到hack，copy boilerplate.go.txt 到【项目根目录下】
+    1. cd 到cmd/client-gen,生成client-go并copy到$GOPATH/src
+    2. cd 到cmd/deepcopy-gen，生成deepcopy-gen并copy到$GOPATH/src
+    3. cd 到cmd/lister-gen，生成lister-gen并copy到$GOPATH/src
+    4. cd 到cmd/informer-gen，生成informer-gen并copy到$GOPATH/src
+    5. cd 到hack，copy boilerplate.go.txt 到$GOPATH/src/crd
 
 ## 生成
+cd 到$GOPATH/src
 - ./deepcopy-gen --go-header-file crd/boilerplate.go.txt --input-dirs crd/pkg/apis/foo/v1 --output-package crd/pkg/client
 - ./client-gen --go-header-file crd/boilerplate.go.txt --input-dirs crd/pkg/apis/foo/v1 --output-package crd/pkg/client
-- ./lister-gen --go-header-file crd/boilerplate.go.txt --input-dirs crd/pkg/apis/foo/v1 --output-package crd/pkg/client
-- ./informer-gen --go-header-file crd/boilerplate.go.txt --input-dirs crd/pkg/apis/foo/v1 --output-package crd/pkg/client
+- ./lister-gen --go-header-file crd/boilerplate.go.txt --input-dirs crd/pkg/apis/foo/v1 --output-package crd/pkg/lister
+- ./informer-gen --go-header-file crd/boilerplate.go.txt --input-dirs crd/pkg/apis/foo/v1 --output-package crd/pkg/informer
 
 ## 成果
 ````
-[root@main crd]# tree
-.
 ├── boilerplate.go.txt
+├── code-generator-1.16
+│   ├── client-gen
+│   ├── deepcopy-gen
+│   ├── informer-gen
+│   └── lister-gen
 ├── go.mod
 ├── go.sum
 ├── pkg
@@ -33,34 +38,36 @@
 │   │           ├── doc.go
 │   │           ├── register.go
 │   │           └── types.go
-│   └── client
-│       ├── externalversions
-│       │   ├── factory.go
-│       │   ├── foo
-│       │   │   ├── interface.go
-│       │   │   └── v1
-│       │   │       ├── interface.go
-│       │   │       └── student.go
-│       │   ├── generic.go
-│       │   └── internalinterfaces
-│       │       └── factory_interfaces.go
-│       ├── foo
-│       │   └── v1
-│       │       ├── expansion_generated.go
-│       │       └── student.go
-│       └── internalclientset
-│           ├── clientset.go
-│           ├── doc.go
-│           ├── fake
-│           │   ├── clientset_generated.go
-│           │   ├── doc.go
-│           │   └── register.go
-│           └── scheme
-│               ├── doc.go
-│               └── register.go
+│   ├── client
+│   │   └── internalclientset
+│   │       ├── clientset.go
+│   │       ├── doc.go
+│   │       ├── fake
+│   │       │   ├── clientset_generated.go
+│   │       │   ├── doc.go
+│   │       │   └── register.go
+│   │       └── scheme
+│   │           ├── doc.go
+│   │           └── register.go
+│   ├── informer
+│   │   └── externalversions
+│   │       ├── factory.go
+│   │       ├── foo
+│   │       │   ├── interface.go
+│   │       │   └── v1
+│   │       │       ├── hellotype.go
+│   │       │       └── interface.go
+│   │       ├── generic.go
+│   │       └── internalinterfaces
+│   │           └── factory_interfaces.go
+│   └── lister
+│       └── foo
+│           └── v1
+│               ├── expansion_generated.go
+│               └── hellotype.go
 └── README.md
 
-14 directories, 24 files
+17 directories, 28 files
 ````
 
 ## FAQ
